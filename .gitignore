@@ -1,0 +1,62 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.sln.docstates
+
+# Build Results
+[Dd]ebug/
+[Rr]elease/
+*.bak
+*.obj
+*.pdb
+*.ilk
+*.meta
+*.exp
+*.lib
+*.sbr
+*.log
+*.resources
+*.dll
+*.exe
+*.tlb
+*.tlh
+*.tmp
+*.rsp
+*.pgc
+*.pgd
+
+# NuGet
+*.nupkg
+*.snupkg
+*.dll.config
+*.pdb
+
+# Rider
+.idea/
+*.iml
+
+# Misc
+[Bb]in/
+[Oo]bj/
+
+# Resharper
+*.DotSettings
+
+# Local History
+.history
+
+# User-specific files
+*.user
+
+# Azure Functions
+bin/
+objs/
+host.json
+local.settings.json
+
+# Npm
+node_modules/
+
+# Generated files
+*.gen.cs 
