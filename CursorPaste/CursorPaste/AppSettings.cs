@@ -1,13 +1,12 @@
 using System;
 using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace CursorPaste
 {
     public class AppSettings
     {
-        [JsonPropertyName("SendOnEnter")]
+        [JsonProperty("SendOnEnter")]
         public bool SendOnEnter { get; set; } = false; // Default value
 
         public static AppSettings Load()
@@ -18,7 +17,7 @@ namespace CursorPaste
                 try
                 {
                     string json = File.ReadAllText(filePath);
-                    return JsonSerializer.Deserialize<AppSettings>(json) ?? new AppSettings();
+                    return JsonConvert.DeserializeObject<AppSettings>(json) ?? new AppSettings();
                 }
                 catch (Exception ex)
                 {
@@ -35,8 +34,7 @@ namespace CursorPaste
             string filePath = GetSettingsFilePath();
             try
             {
-                var options = new JsonSerializerOptions { WriteIndented = true };
-                string json = JsonSerializer.Serialize(this, options);
+                string json = JsonConvert.SerializeObject(this, Formatting.Indented);
                 File.WriteAllText(filePath, json);
             }
             catch (Exception ex)
