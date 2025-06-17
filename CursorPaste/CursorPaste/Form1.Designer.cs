@@ -62,7 +62,7 @@ partial class Form1 {
         this.insertButton.TabIndex = 1;
         this.insertButton.Text = "Insert text at cursor";
         this.insertButton.UseVisualStyleBackColor = true;
-        this.insertButton.Click += new System.EventHandler(this.insertButton_Click);
+        this.insertButton.Click += new System.EventHandler(this.InsertButton_Click);
         //
         // instructionsLabel
         //
@@ -81,7 +81,7 @@ partial class Form1 {
         this.promptsListBox.Name = "promptsListBox";
         this.promptsListBox.Size = new System.Drawing.Size(200, 500);
         this.promptsListBox.TabIndex = 3;
-        this.promptsListBox.SelectedIndexChanged += new System.EventHandler(this.promptsListBox_SelectedIndexChanged);
+        this.promptsListBox.SelectedIndexChanged += new System.EventHandler(this.PromptsListBox_SelectedIndexChanged);
         //
         // promptNameLabel
         //
@@ -124,7 +124,7 @@ partial class Form1 {
         this.addButton.TabIndex = 8;
         this.addButton.Text = "Add";
         this.addButton.UseVisualStyleBackColor = true;
-        this.addButton.Click += new System.EventHandler(this.addButton_Click);
+        this.addButton.Click += new System.EventHandler(this.AddButton_Click);
         //
         // updateButton
         //
@@ -134,7 +134,7 @@ partial class Form1 {
         this.updateButton.TabIndex = 9;
         this.updateButton.Text = "Update";
         this.updateButton.UseVisualStyleBackColor = true;
-        this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
+        this.updateButton.Click += new System.EventHandler(this.UpdateButton_Click);
         //
         // deleteButton
         //

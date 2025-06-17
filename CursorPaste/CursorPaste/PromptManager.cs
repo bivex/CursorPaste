@@ -9,7 +9,7 @@ namespace CursorPaste
     public class PromptManager
     {
         private const string PromptsFileName = "prompts.json";
-        private List<Prompt> _prompts;
+        private readonly List<Prompt> _prompts;
 
         public IEnumerable<Prompt> Prompts => _prompts.AsReadOnly();
 
@@ -18,7 +18,7 @@ namespace CursorPaste
             _prompts = LoadPrompts();
         }
 
-        private List<Prompt> LoadPrompts()
+        private static List<Prompt> LoadPrompts()
         {
             if (File.Exists(PromptsFileName))
             {
@@ -27,11 +27,13 @@ namespace CursorPaste
                     string jsonString = File.ReadAllText(PromptsFileName);
                     return JsonConvert.DeserializeObject<List<Prompt>>(jsonString) ?? new List<Prompt>();
                 }
-                catch (Exception ex)
+                catch (Newtonsoft.Json.JsonSerializationException ex)
                 {
-                    // Log the error or handle it appropriately
-                    Console.WriteLine($"Error loading prompts: {ex.Message}");
-                    return new List<Prompt>();
+                    throw new IOException($"Error deserializing prompts from {PromptsFileName}: {ex.Message}", ex);
+                }
+                catch (IOException ex)
+                {
+                    throw new IOException($"Error reading prompts from {PromptsFileName}: {ex.Message}", ex);
                 }
             }
             return new List<Prompt>();
@@ -44,10 +46,13 @@ namespace CursorPaste
                 string jsonString = JsonConvert.SerializeObject(_prompts, Formatting.Indented);
                 File.WriteAllText(PromptsFileName, jsonString);
             }
-            catch (Exception ex)
+            catch (Newtonsoft.Json.JsonSerializationException ex)
             {
-                // Log the error or handle it appropriately
-                Console.WriteLine($"Error saving prompts: {ex.Message}");
+                throw new IOException($"Error serializing prompts to {PromptsFileName}: {ex.Message}", ex);
+            }
+            catch (IOException ex)
+            {
+                throw new IOException($"Error writing prompts to {PromptsFileName}: {ex.Message}", ex);
             }
         }
 

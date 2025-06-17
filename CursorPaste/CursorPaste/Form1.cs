@@ -8,18 +8,28 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CursorPaste;
+using System.IO;
 
 namespace CursorPaste {
 public partial class Form1 : Form {
-    private PromptManager _promptManager;
+    private readonly PromptManager _promptManager;
     public Form1()
     {
         InitializeComponent();
-        _promptManager = new PromptManager();
-        LoadPromptsToListBox();
+        try
+        {
+            _promptManager = new PromptManager();
+            LoadPromptsToListBox();
+        }
+        catch (IOException ex)
+        {
+            MessageBox.Show($"Error initializing prompts: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            // Optionally, disable functionality that relies on prompts or exit the application
+            this.Close(); // Close the application if prompts cannot be loaded
+        }
     }
 
-    private void insertButton_Click ( object sender, EventArgs e )
+    private async void InsertButton_Click ( object sender, EventArgs e )
     {
         // Get the text from the RichTextBox
         string textToInsert = snippetTextBox.Text;
@@ -31,7 +41,7 @@ public partial class Form1 : Form {
         this.Hide();
 
         // Add a small delay to ensure the focus shifts to the target application
-        System.Threading.Thread.Sleep ( 200 );
+        await Task.Delay ( 200 );
 
         // Send the text to the current cursor position
         SendKeys.SendWait ( textToInsert );
@@ -50,7 +60,7 @@ public partial class Form1 : Form {
         promptsListBox.ValueMember = "Content"; // Use Content as the value (optional, but good practice)
     }
 
-    private void promptsListBox_SelectedIndexChanged(object sender, EventArgs e)
+    private void PromptsListBox_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (promptsListBox.SelectedItem is Prompt selectedPrompt)
         {
@@ -60,7 +70,7 @@ public partial class Form1 : Form {
         }
     }
 
-    private void addButton_Click(object sender, EventArgs e)
+    private void AddButton_Click(object sender, EventArgs e)
     {
         try
         {
@@ -83,13 +93,17 @@ public partial class Form1 : Form {
         {
             MessageBox.Show(ex.Message, "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+        catch (IOException ex)
+        {
+            MessageBox.Show($"Error saving prompt: {ex.Message}", "File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
         catch (Exception ex)
         {
-            MessageBox.Show($"An error occurred while adding the prompt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show($"An unexpected error occurred while adding the prompt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
-    private void updateButton_Click(object sender, EventArgs e)
+    private void UpdateButton_Click(object sender, EventArgs e)
     {
         Prompt selectedPrompt = promptsListBox.SelectedItem as Prompt;
         if (selectedPrompt == null)
@@ -124,9 +138,13 @@ public partial class Form1 : Form {
         {
             MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+        catch (IOException ex)
+        {
+            MessageBox.Show($"Error saving prompt updates: {ex.Message}", "File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
         catch (Exception ex)
         {
-            MessageBox.Show($"An error occurred while updating the prompt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show($"An unexpected error occurred while updating the prompt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -153,9 +171,13 @@ public partial class Form1 : Form {
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"Error deleting prompt: {ex.Message}", "File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred while deleting the prompt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"An unexpected error occurred while deleting the prompt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
