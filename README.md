@@ -15,7 +15,7 @@ CursorPaste is a simple Windows Forms application that allows users to manage an
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/CursorPaste.git
+    git clone https://github.com/bivex/CursorPaste.git
     ```
 2.  **Open in Visual Studio:** Open the `CursorPaste.sln` file in Visual Studio.
 3.  **Build the project:** Build the solution to restore NuGet packages and compile the application.
@@ -26,6 +26,10 @@ CursorPaste is a simple Windows Forms application that allows users to manage an
 6.  **Insert Snippets:**
     *   Select a prompt from the list.
     *   Click the "Insert text at cursor" button. The application will hide temporarily, and the selected text will be inserted at your current cursor position in any other open application.
+
+## Screenshot
+
+![CursorPaste Demo](demo.png)
 
 ## Technologies Used
 
