@@ -45,6 +45,7 @@ partial class Form1 {
             this.promptsGroupBox = new System.Windows.Forms.GroupBox();
             this.promptEditGroupBox = new System.Windows.Forms.GroupBox();
             this.snippetGroupBox = new System.Windows.Forms.GroupBox();
+            this.sendOnEnterCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             //
             // snippetTextBox
@@ -54,6 +55,7 @@ partial class Form1 {
             this.snippetTextBox.Size = new System.Drawing.Size(600, 300);
             this.snippetTextBox.TabIndex = 0;
             this.snippetTextBox.Text = "Enter your snippet, template, or phrase here.";
+            this.snippetTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SnippetTextBox_KeyDown);
             //
             // insertButton
             //
@@ -219,6 +221,7 @@ partial class Form1 {
             this.snippetGroupBox.Controls.Add(this.instructionsLabel);
             this.snippetGroupBox.Controls.Add(this.snippetTextBox);
             this.snippetGroupBox.Controls.Add(this.insertButton);
+            this.snippetGroupBox.Controls.Add(this.sendOnEnterCheckBox);
             //
             // instructionsLabel
             //
@@ -233,6 +236,15 @@ partial class Form1 {
             //
             this.insertButton.Location = new System.Drawing.Point(10, 380);
             this.insertButton.Size = new System.Drawing.Size(560, 50);
+            //
+            // sendOnEnterCheckBox
+            //
+            this.sendOnEnterCheckBox.Location = new System.Drawing.Point(10, 365);
+            this.sendOnEnterCheckBox.Name = "sendOnEnterCheckBox";
+            this.sendOnEnterCheckBox.Size = new System.Drawing.Size(150, 24);
+            this.sendOnEnterCheckBox.TabIndex = 11;
+            this.sendOnEnterCheckBox.Text = "Send on Enter key";
+            this.sendOnEnterCheckBox.UseVisualStyleBackColor = true;
             //
             // Form1
             //
@@ -262,6 +274,7 @@ partial class Form1 {
     private System.Windows.Forms.GroupBox promptsGroupBox;
     private System.Windows.Forms.GroupBox promptEditGroupBox;
     private System.Windows.Forms.GroupBox snippetGroupBox;
+    private System.Windows.Forms.CheckBox sendOnEnterCheckBox;
     }
 }
 

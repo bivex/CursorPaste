@@ -52,6 +52,16 @@ public partial class Form1 : Form {
         insertButton.Enabled = true;
     }
 
+    private void SnippetTextBox_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter && sendOnEnterCheckBox.Checked)
+        {
+            InsertButton_Click(this, EventArgs.Empty);
+            e.Handled = true; // Prevent the default Enter key behavior (e.g., new line)
+            e.SuppressKeyPress = true; // Suppress further key processing
+        }
+    }
+
     private void LoadPromptsToListBox()
     {
         promptsListBox.DataSource = null;
