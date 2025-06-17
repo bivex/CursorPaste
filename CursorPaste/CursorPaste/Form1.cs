@@ -9,10 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CursorPaste;
 using System.IO;
+using System.Diagnostics;
 
 namespace CursorPaste {
 public partial class Form1 : Form {
     private readonly PromptManager _promptManager;
+    private AppSettings _appSettings;
+
     public Form1()
     {
         InitializeComponent();
@@ -20,6 +23,16 @@ public partial class Form1 : Form {
         {
             _promptManager = new PromptManager();
             LoadPromptsToListBox();
+
+            // Load settings and apply to checkbox
+            _appSettings = AppSettings.Load();
+            sendOnEnterCheckBox.Checked = _appSettings.SendOnEnter;
+
+            // Attach event handler for checkbox change to save settings
+            sendOnEnterCheckBox.CheckedChanged += SendOnEnterCheckBox_CheckedChanged;
+
+            // Attach FormClosing event handler to save settings
+            this.FormClosing += Form1_FormClosing;
         }
         catch (IOException ex)
         {
@@ -34,8 +47,21 @@ public partial class Form1 : Form {
         // Get the text from the RichTextBox
         string textToInsert = snippetTextBox.Text;
 
+        // If the "Send on Enter" checkbox is checked, append an Enter key press
+        if (sendOnEnterCheckBox.Checked)
+        {
+            textToInsert += "{ENTER}";
+            Debug.WriteLine("InsertButton_Click: Appending {ENTER} to the text to insert.");
+        }
+
+        Debug.WriteLine($"InsertButton_Click: Attempting to insert text: \"{textToInsert}\"");
+
         // Disable the button to prevent recursive calls
         insertButton.Enabled = false;
+
+        // Ensure the snippetTextBox loses focus before hiding the form
+        // This might help in ensuring the SendKeys targets the correct external application
+        this.ActiveControl = null; // Remove focus from any control on the form
 
         // Hide the form temporarily to allow SendKeys to work on other applications
         this.Hide();
@@ -50,12 +76,15 @@ public partial class Form1 : Form {
         this.Show();
         this.Activate();
         insertButton.Enabled = true;
+        Debug.WriteLine("InsertButton_Click: Text insertion process completed.");
     }
 
     private void SnippetTextBox_KeyDown(object sender, KeyEventArgs e)
     {
+        Debug.WriteLine($"SnippetTextBox_KeyDown: KeyCode = {e.KeyCode}, SendOnEnterChecked = {sendOnEnterCheckBox.Checked}");
         if (e.KeyCode == Keys.Enter && sendOnEnterCheckBox.Checked)
         {
+            Debug.WriteLine("SnippetTextBox_KeyDown: Enter key pressed and Send on Enter is checked. Triggering InsertButton_Click.");
             InsertButton_Click(this, EventArgs.Empty);
             e.Handled = true; // Prevent the default Enter key behavior (e.g., new line)
             e.SuppressKeyPress = true; // Suppress further key processing
@@ -197,6 +226,21 @@ public partial class Form1 : Form {
         promptNameTextBox.Text = string.Empty;
         promptContentRichTextBox.Text = string.Empty;
         snippetTextBox.Text = string.Empty;
+    }
+
+    private void SendOnEnterCheckBox_CheckedChanged(object sender, EventArgs e)
+    {
+        // Update the setting and save it
+        _appSettings.SendOnEnter = sendOnEnterCheckBox.Checked;
+        _appSettings.Save();
+        Debug.WriteLine($"AppSettings: SendOnEnter set to {_appSettings.SendOnEnter} and saved.");
+    }
+
+    private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        // Save settings when the form is closing
+        _appSettings.Save();
+        Debug.WriteLine("AppSettings: Settings saved on form closing.");
     }
 }
 }
