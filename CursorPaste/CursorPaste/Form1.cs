@@ -130,7 +130,7 @@ public partial class Form1 : Form {
         }
     }
 
-    private void deleteButton_Click(object sender, EventArgs e)
+    private void DeleteButton_Click(object sender, EventArgs e)
     {
         Prompt selectedPrompt = promptsListBox.SelectedItem as Prompt;
         if (selectedPrompt == null)

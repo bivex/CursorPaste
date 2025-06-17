@@ -64,3 +64,5 @@ CHECKCODE.bat
 packages/
 
 CursorPaste/CursorPaste.ndproj
+CursorPaste/NDependOut
+
