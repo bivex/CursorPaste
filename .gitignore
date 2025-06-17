@@ -60,3 +60,5 @@ node_modules/
 
 # Generated files
 *.gen.cs 
+CHECKCODE.bat
+packages/

@@ -7,12 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CursorPaste;
 
 namespace CursorPaste {
 public partial class Form1 : Form {
+    private PromptManager _promptManager;
     public Form1()
     {
         InitializeComponent();
+        _promptManager = new PromptManager();
+        LoadPromptsToListBox();
     }
 
     private void insertButton_Click ( object sender, EventArgs e )
@@ -36,6 +40,131 @@ public partial class Form1 : Form {
         this.Show();
         this.Activate();
         insertButton.Enabled = true;
+    }
+
+    private void LoadPromptsToListBox()
+    {
+        promptsListBox.DataSource = null;
+        promptsListBox.DataSource = _promptManager.Prompts.ToList();
+        promptsListBox.DisplayMember = "Name"; // Display the Name property in the ListBox
+        promptsListBox.ValueMember = "Content"; // Use Content as the value (optional, but good practice)
+    }
+
+    private void promptsListBox_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (promptsListBox.SelectedItem is Prompt selectedPrompt)
+        {
+            promptNameTextBox.Text = selectedPrompt.Name;
+            promptContentRichTextBox.Text = selectedPrompt.Content;
+            snippetTextBox.Text = selectedPrompt.Content; // Also set the insert snippet box
+        }
+    }
+
+    private void addButton_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            string name = promptNameTextBox.Text.Trim();
+            string content = promptContentRichTextBox.Text;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("Prompt name cannot be empty.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            Prompt newPrompt = new Prompt(name, content);
+            _promptManager.AddPrompt(newPrompt);
+            LoadPromptsToListBox();
+            ClearPromptInputFields();
+            MessageBox.Show("Prompt added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (ArgumentException ex)
+        {
+            MessageBox.Show(ex.Message, "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred while adding the prompt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void updateButton_Click(object sender, EventArgs e)
+    {
+        Prompt selectedPrompt = promptsListBox.SelectedItem as Prompt;
+        if (selectedPrompt == null)
+        {
+            MessageBox.Show("Please select a prompt to update.", "Selection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        try
+        {
+            string originalName = selectedPrompt.Name;
+            string newName = promptNameTextBox.Text.Trim();
+            string newContent = promptContentRichTextBox.Text;
+
+            if (string.IsNullOrWhiteSpace(newName))
+            {
+                MessageBox.Show("Prompt name cannot be empty.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            Prompt updatedPrompt = new Prompt(newName, newContent);
+            _promptManager.UpdatePrompt(originalName, updatedPrompt);
+            LoadPromptsToListBox();
+            ClearPromptInputFields();
+            MessageBox.Show("Prompt updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (ArgumentException ex)
+        {
+            MessageBox.Show(ex.Message, "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred while updating the prompt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void deleteButton_Click(object sender, EventArgs e)
+    {
+        Prompt selectedPrompt = promptsListBox.SelectedItem as Prompt;
+        if (selectedPrompt == null)
+        {
+            MessageBox.Show("Please select a prompt to delete.", "Selection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete this prompt?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        if (dialogResult == DialogResult.Yes)
+        {
+            try
+            {
+                _promptManager.DeletePrompt(selectedPrompt.Name);
+                LoadPromptsToListBox();
+                ClearPromptInputFields();
+                MessageBox.Show("Prompt deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while deleting the prompt: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+
+    private void ClearPromptInputFields()
+    {
+        promptNameTextBox.Text = string.Empty;
+        promptContentRichTextBox.Text = string.Empty;
+        snippetTextBox.Text = string.Empty;
     }
 }
 }
