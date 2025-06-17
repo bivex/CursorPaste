@@ -41,6 +41,9 @@ partial class Form1 {
         this.addButton = new System.Windows.Forms.Button();
         this.updateButton = new System.Windows.Forms.Button();
         this.deleteButton = new System.Windows.Forms.Button();
+        this.promptsGroupBox = new System.Windows.Forms.GroupBox();
+        this.promptEditGroupBox = new System.Windows.Forms.GroupBox();
+        this.snippetGroupBox = new System.Windows.Forms.GroupBox();
         this.SuspendLayout();
         //
         // snippetTextBox
@@ -143,19 +146,99 @@ partial class Form1 {
         this.deleteButton.UseVisualStyleBackColor = true;
         this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
         //
+        // promptsGroupBox
+        //
+        this.promptsGroupBox.Location = new System.Drawing.Point(10, 10);
+        this.promptsGroupBox.Name = "promptsGroupBox";
+        this.promptsGroupBox.Size = new System.Drawing.Size(220, 540);
+        this.promptsGroupBox.TabIndex = 20;
+        this.promptsGroupBox.TabStop = false;
+        this.promptsGroupBox.Text = "Prompts List";
+        this.promptsGroupBox.Controls.Add(this.promptsListBox);
+        //
+        // promptsListBox (update location for groupbox)
+        //
+        this.promptsListBox.Location = new System.Drawing.Point(10, 20);
+        this.promptsListBox.Size = new System.Drawing.Size(200, 500);
+        //
+        // promptEditGroupBox
+        //
+        this.promptEditGroupBox.Location = new System.Drawing.Point(240, 10);
+        this.promptEditGroupBox.Name = "promptEditGroupBox";
+        this.promptEditGroupBox.Size = new System.Drawing.Size(340, 470);
+        this.promptEditGroupBox.TabIndex = 21;
+        this.promptEditGroupBox.TabStop = false;
+        this.promptEditGroupBox.Text = "Prompt Management";
+        this.promptEditGroupBox.Controls.Add(this.promptNameLabel);
+        this.promptEditGroupBox.Controls.Add(this.promptNameTextBox);
+        this.promptEditGroupBox.Controls.Add(this.promptContentLabel);
+        this.promptEditGroupBox.Controls.Add(this.promptContentRichTextBox);
+        this.promptEditGroupBox.Controls.Add(this.addButton);
+        this.promptEditGroupBox.Controls.Add(this.updateButton);
+        this.promptEditGroupBox.Controls.Add(this.deleteButton);
+        //
+        // promptNameLabel
+        //
+        this.promptNameLabel.Location = new System.Drawing.Point(10, 30);
+        //
+        // promptNameTextBox
+        //
+        this.promptNameTextBox.Location = new System.Drawing.Point(10, 50);
+        this.promptNameTextBox.Size = new System.Drawing.Size(320, 22);
+        //
+        // promptContentLabel
+        //
+        this.promptContentLabel.Location = new System.Drawing.Point(10, 90);
+        //
+        // promptContentRichTextBox
+        //
+        this.promptContentRichTextBox.Location = new System.Drawing.Point(10, 110);
+        this.promptContentRichTextBox.Size = new System.Drawing.Size(320, 270);
+        //
+        // addButton
+        //
+        this.addButton.Location = new System.Drawing.Point(10, 400);
+        //
+        // updateButton
+        //
+        this.updateButton.Location = new System.Drawing.Point(120, 400);
+        //
+        // deleteButton
+        //
+        this.deleteButton.Location = new System.Drawing.Point(230, 400);
+        //
+        // snippetGroupBox
+        //
+        this.snippetGroupBox.Location = new System.Drawing.Point(600, 10);
+        this.snippetGroupBox.Name = "snippetGroupBox";
+        this.snippetGroupBox.Size = new System.Drawing.Size(580, 470);
+        this.snippetGroupBox.TabIndex = 22;
+        this.snippetGroupBox.TabStop = false;
+        this.snippetGroupBox.Text = "Snippet / Insert";
+        this.snippetGroupBox.Controls.Add(this.instructionsLabel);
+        this.snippetGroupBox.Controls.Add(this.snippetTextBox);
+        this.snippetGroupBox.Controls.Add(this.insertButton);
+        //
+        // instructionsLabel
+        //
+        this.instructionsLabel.Location = new System.Drawing.Point(10, 30);
+        //
+        // snippetTextBox
+        //
+        this.snippetTextBox.Location = new System.Drawing.Point(10, 60);
+        this.snippetTextBox.Size = new System.Drawing.Size(560, 300);
+        //
+        // insertButton
+        //
+        this.insertButton.Location = new System.Drawing.Point(10, 380);
+        this.insertButton.Size = new System.Drawing.Size(560, 50);
+        //
         // Form1
         //
-        this.Controls.Add(this.deleteButton);
-        this.Controls.Add(this.updateButton);
-        this.Controls.Add(this.addButton);
-        this.Controls.Add(this.promptContentRichTextBox);
-        this.Controls.Add(this.promptContentLabel);
-        this.Controls.Add(this.promptNameTextBox);
-        this.Controls.Add(this.promptNameLabel);
-        this.Controls.Add(this.promptsListBox);
-        this.Controls.Add(this.instructionsLabel);
-        this.Controls.Add(this.insertButton);
-        this.Controls.Add(this.snippetTextBox);
+        this.Controls.Clear();
+        this.Controls.Add(this.promptsGroupBox);
+        this.Controls.Add(this.promptEditGroupBox);
+        this.Controls.Add(this.snippetGroupBox);
         this.Name = "Form1";
         this.Text = "CursorPaste";
         this.ResumeLayout(false);
@@ -175,6 +258,9 @@ partial class Form1 {
     private System.Windows.Forms.Button addButton;
     private System.Windows.Forms.Button updateButton;
     private System.Windows.Forms.Button deleteButton;
+    private System.Windows.Forms.GroupBox promptsGroupBox;
+    private System.Windows.Forms.GroupBox promptEditGroupBox;
+    private System.Windows.Forms.GroupBox snippetGroupBox;
     }
 }
 

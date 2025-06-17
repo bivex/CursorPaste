@@ -62,3 +62,5 @@ node_modules/
 *.gen.cs 
 CHECKCODE.bat
 packages/
+
+CursorPaste/CursorPaste.ndproj
