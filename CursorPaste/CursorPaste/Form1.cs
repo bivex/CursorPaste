@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using CursorPaste;
 using System.IO;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace CursorPaste {
 public partial class Form1 : Form {
@@ -62,18 +63,29 @@ public partial class Form1 : Form {
         // Ensure the snippetTextBox loses focus before hiding the form
         // This might help in ensuring the SendKeys targets the correct external application
         this.ActiveControl = null; // Remove focus from any control on the form
+        Application.DoEvents(); // Ensure focus change is processed
 
         // Hide the form temporarily to allow SendKeys to work on other applications
+        this.WindowState = FormWindowState.Minimized; // Minimize the form
         this.Hide();
 
-        // Add a small delay to ensure the focus shifts to the target application
-        await Task.Delay ( 200 );
+        // New method: Use Clipboard for multi-line support
+        Clipboard.SetText ( textToInsert );
+        Debug.WriteLine($"InsertButton_Click: Text set to clipboard: \"{Clipboard.GetText()}\"");
+        await Task.Delay ( 100 ); // Increased delay to ensure clipboard is set
 
-        // Send the text to the current cursor position
-        SendKeys.SendWait ( textToInsert );
+        // Simulate Ctrl+V using explicit key down/up for better reliability
+        // SendKeys.SendWait ( "{VK_CONTROL down}" );
+        // SendKeys.SendWait ( "v" );
+        // SendKeys.SendWait ( "{VK_CONTROL up}" );
+        SendKeys.SendWait ( "^v" ); // Simulate Ctrl+V again
+
+        // Optionally, clear the clipboard after pasting
+        Clipboard.Clear();
 
         // Show the form again and re-enable the button
         this.Show();
+        this.WindowState = FormWindowState.Normal; // Restore the form
         this.Activate();
         insertButton.Enabled = true;
         Debug.WriteLine("InsertButton_Click: Text insertion process completed.");
